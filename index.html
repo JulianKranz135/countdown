@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Countdown bis Pause</title>
+    <style>
+        /* --- Ändern Line 120 --- */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px); /* Milchglas-Effekt */
+            padding: 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 90%;
+        }
+
+        h1 {
+            font-weight: 300;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+            font-size: 1.5rem;
+        }
+
+        .countdown {
+            display: flex;
+            justify-content: center;
+            gap: 2rem; 
+            flex-wrap: wrap;
+        }
+
+        .time-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .number {
+            font-size: 4rem;
+            font-weight: 600;
+            line-height: 1;
+            text-shadow: 0 5px 10px rgba(0,0,0,0.1);
+        }
+
+        .label {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .countdown {
+                gap: 1rem;
+            }
+            
+            .number {
+                font-size: 2.5rem;
+            }
+            
+            .container {
+                padding: 2rem 1rem;
+                width: 90%;
+            }
+            
+            h1 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Pause in</h1>
+        <div class="countdown" id="countdown">
+            <div class="time-box">
+                <span class="number" id="days">00</span>
+                <span class="label">Tage</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="hours">00</span>
+                <span class="label">Std</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="minutes">00</span>
+                <span class="label">Min</span>
+            </div>
+            <div class="time-box">
+                <span class="number" id="seconds">00</span>
+                <span class="label">Sek</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    
+        const targetDate = new Date("Febrauar 4, 2026 09:15:00").getTime();
+
+        const timer = setInterval(function() {
+
+            const now = new Date().getTime();
+
+            const distance = targetDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days;
+            document.getElementById("hours").innerText = formatTime(hours);
+            document.getElementById("minutes").innerText = formatTime(minutes);
+            document.getElementById("seconds").innerText = formatTime(seconds);
+
+            if (distance < 0) {
+                clearInterval(timer);
+                document.getElementById("countdown").innerHTML = "<h2>Zeit abgelaufen!</h2>";
+            }
+        }, 1000);
+
+        function formatTime(time) {
+            return time < 10 ? `0${time}` : time;
+        }
+    </script>
+</body>
+</html>
