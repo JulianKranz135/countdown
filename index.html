@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Countdown bis Pause</title>
     <style>
-        /* --- Ändern Line 120 --- */
+        /* --- Ändern in Line 117! Denk an DATUM und UHRZEIT --- */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
         body {
@@ -24,7 +24,7 @@
         .container {
             text-align: center;
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px); /* Milchglas-Effekt */
+            backdrop-filter: blur(10px);
             padding: 3rem;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
@@ -114,7 +114,7 @@
 
     <script>
     
-        const targetDate = new Date("Febrauar 6, 2026 09:15:00").getTime();
+        const targetDate = new Date("Febrauar 6, 2026 11:05:00").getTime();
 
         const timer = setInterval(function() {
 
@@ -134,7 +134,7 @@
 
             if (distance < 0) {
                 clearInterval(timer);
-                document.getElementById("countdown").innerHTML = "<h2>Zeit abgelaufen!</h2>";
+                document.getElementById("countdown").innerHTML = "<h2>JETZT!!!!</h2>";
             }
         }, 1000);
 
