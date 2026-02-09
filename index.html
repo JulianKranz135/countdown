@@ -9,16 +9,16 @@
 
         body {
             margin: 0;
-            padding: 2rem 0; /* Etwas Platz oben und unten */
+            padding: 2rem 0;
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh; /* Mindestens Bildschirmhöhe */
+            min-height: 100vh;
             display: flex;
-            flex-direction: column; /* Elemente untereinander anordnen */
+            flex-direction: column; 
             align-items: center;
-            gap: 2rem; /* Abstand zwischen den Boxen */
+            gap: 2rem; 
             color: #fff;
-            overflow-y: auto; /* Scrollen erlauben */
+            overflow-y: auto; 
         }
 
         .container {
@@ -71,7 +71,6 @@
             margin-top: 0.5rem;
         }
 
-        /* Styling für die Eingabefelder */
         .settings {
             margin-top: 1rem;
             padding-top: 1rem;
@@ -157,25 +156,21 @@
     </div>
 
     <script>
-        // Wir speichern die Zielzeiten für jeden Timer in einem Objekt
         let targets = {
             'pause': new Date("Feb 9, 2026 12:05:00").getTime(),
-            'school': new Date("Feb 9, 2026 13:30:00").getTime(), // Beispielzeit
-            'vacation': new Date("Mar 28, 2026 00:00:00").getTime() // Beispielzeit
+            'school': new Date("Feb 9, 2026 13:30:00").getTime(), 
+            'vacation': new Date("Mar 28, 2026 00:00:00").getTime() 
         };
 
-        // Das Haupt-Intervall, das alle Timer aktualisiert
         setInterval(function() {
             const now = new Date().getTime();
 
-            // Wir rufen die Berechnungs-Funktion für jeden Timer auf
             calculateTime('pause', now);
             calculateTime('school', now);
             calculateTime('vacation', now);
 
         }, 1000);
 
-        // Funktion zur Berechnung der Zeit
         function calculateTime(id, now) {
             const distance = targets[id] - now;
             const container = document.getElementById('cd-' + id);
@@ -190,32 +185,24 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            // Wir suchen innerhalb des spezifischen Containers nach den Klassen
             container.querySelector('.day').innerText = days;
             container.querySelector('.hour').innerText = formatTime(hours);
             container.querySelector('.min').innerText = formatTime(minutes);
             container.querySelector('.sec').innerText = formatTime(seconds);
         }
 
-        // Hilfsfunktion für führende Nullen (01, 02 etc.)
         function formatTime(time) {
             return time < 10 ? `0${time}` : time;
         }
 
-        // Funktion um das Datum per Button zu ändern
         function updateTarget(id) {
             const input = document.getElementById('input-' + id).value;
             
             if (input) {
-                // Das Input-Feld gibt einen String zurück, wir wandeln ihn in Millisekunden um
                 targets[id] = new Date(input).getTime();
                 
-                // Falls dort vorher "JETZT!" stand, müssen wir das HTML zurücksetzen, 
-                // damit die Zahlen wieder angezeigt werden können.
                 const container = document.getElementById('cd-' + id);
                 if (container.querySelector('h2')) {
-                    // Seite neu laden ist am einfachsten, um die Struktur wiederherzustellen,
-                    // aber eleganter ist es, das HTML neu zu schreiben:
                     location.reload(); 
                 }
             } else {
