@@ -6,7 +6,7 @@
     <link href="icon.ico" rel="icon">
     <title>Countdown bis Pause</title>
     <style>
-        /* --- Ändern in Line 117! Denk an DATUM und UHRZEIT --- */
+        /* --- Ändern in Line 118! Denk an DATUM und UHRZEIT --- */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
         body {
@@ -113,9 +113,12 @@
         </div>
     </div>
 
+    <!-- Erstelle 2 div: Schule aus in... und Ferien in...
+         Jeden div ein button wo man die Uhrzeit und Daten einstellen kann -->
+
     <script>
     
-        const targetDate = new Date("Febrauar 9, 2026 11:05:00").getTime();
+        const targetDate = new Date("Febrauar 9, 2026 12:05:00").getTime();
 
         const timer = setInterval(function() {
 
