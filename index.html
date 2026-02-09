@@ -3,49 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="icon.ico" rel="icon">
-    <title>Countdown bis Pause</title>
+    <title>Multi-Countdown</title>
     <style>
-        /* --- Ändern in Line 118! Denk an DATUM und UHRZEIT --- */
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&display=swap');
 
         body {
             margin: 0;
-            padding: 0;
+            padding: 2rem 0; /* Etwas Platz oben und unten */
             font-family: 'Poppins', sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            height: 100vh;
+            min-height: 100vh; /* Mindestens Bildschirmhöhe */
             display: flex;
-            justify-content: center;
+            flex-direction: column; /* Elemente untereinander anordnen */
             align-items: center;
+            gap: 2rem; /* Abstand zwischen den Boxen */
             color: #fff;
-            overflow: hidden;
+            overflow-y: auto; /* Scrollen erlauben */
         }
 
         .container {
             text-align: center;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            padding: 3rem;
+            padding: 2rem;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            max-width: 90%;
+            width: 90%;
+            max-width: 600px;
         }
 
         h1 {
             font-weight: 300;
             letter-spacing: 2px;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
             text-transform: uppercase;
             font-size: 1.5rem;
+            margin-top: 0;
         }
 
         .countdown {
             display: flex;
             justify-content: center;
-            gap: 2rem; 
+            gap: 1.5rem; 
             flex-wrap: wrap;
+            margin-bottom: 1.5rem;
         }
 
         .time-box {
@@ -55,37 +57,58 @@
         }
 
         .number {
-            font-size: 4rem;
+            font-size: 3rem;
             font-weight: 600;
             line-height: 1;
             text-shadow: 0 5px 10px rgba(0,0,0,0.1);
         }
 
         .label {
-            font-size: 0.9rem;
+            font-size: 0.8rem;
             text-transform: uppercase;
             letter-spacing: 1px;
             opacity: 0.8;
             margin-top: 0.5rem;
         }
 
+        /* Styling für die Eingabefelder */
+        .settings {
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        input[type="datetime-local"] {
+            padding: 8px;
+            border-radius: 5px;
+            border: none;
+            outline: none;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        button {
+            padding: 8px 15px;
+            border-radius: 5px;
+            border: none;
+            background: #fff;
+            color: #764ba2;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            background: #f0f0f0;
+        }
+
         @media (max-width: 600px) {
-            .countdown {
-                gap: 1rem;
-            }
-            
-            .number {
-                font-size: 2.5rem;
-            }
-            
-            .container {
-                padding: 2rem 1rem;
-                width: 90%;
-            }
-            
-            h1 {
-                font-size: 1.1rem;
-            }
+            .number { font-size: 2rem; }
+            .container { padding: 1.5rem 1rem; }
         }
     </style>
 </head>
@@ -93,57 +116,111 @@
 
     <div class="container">
         <h1>Pause in</h1>
-        <div class="countdown" id="countdown">
-            <div class="time-box">
-                <span class="number" id="days">00</span>
-                <span class="label">Tage</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="hours">00</span>
-                <span class="label">Std</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="minutes">00</span>
-                <span class="label">Min</span>
-            </div>
-            <div class="time-box">
-                <span class="number" id="seconds">00</span>
-                <span class="label">Sek</span>
-            </div>
+        <div class="countdown" id="cd-pause">
+            <div class="time-box"><span class="number day">00</span><span class="label">Tage</span></div>
+            <div class="time-box"><span class="number hour">00</span><span class="label">Std</span></div>
+            <div class="time-box"><span class="number min">00</span><span class="label">Min</span></div>
+            <div class="time-box"><span class="number sec">00</span><span class="label">Sek</span></div>
+        </div>
+        <div class="settings">
+            <input type="datetime-local" id="input-pause">
+            <button onclick="updateTarget('pause')">Setzen</button>
         </div>
     </div>
 
-    <!-- Erstelle 2 div: Schule aus in... und Ferien in...
-         Jeden div ein button wo man die Uhrzeit und Daten einstellen kann -->
+    <div class="container">
+        <h1>Schule aus in</h1>
+        <div class="countdown" id="cd-school">
+            <div class="time-box"><span class="number day">00</span><span class="label">Tage</span></div>
+            <div class="time-box"><span class="number hour">00</span><span class="label">Std</span></div>
+            <div class="time-box"><span class="number min">00</span><span class="label">Min</span></div>
+            <div class="time-box"><span class="number sec">00</span><span class="label">Sek</span></div>
+        </div>
+        <div class="settings">
+            <input type="datetime-local" id="input-school">
+            <button onclick="updateTarget('school')">Setzen</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>Ferien in</h1>
+        <div class="countdown" id="cd-vacation">
+            <div class="time-box"><span class="number day">00</span><span class="label">Tage</span></div>
+            <div class="time-box"><span class="number hour">00</span><span class="label">Std</span></div>
+            <div class="time-box"><span class="number min">00</span><span class="label">Min</span></div>
+            <div class="time-box"><span class="number sec">00</span><span class="label">Sek</span></div>
+        </div>
+        <div class="settings">
+            <input type="datetime-local" id="input-vacation">
+            <button onclick="updateTarget('vacation')">Setzen</button>
+        </div>
+    </div>
 
     <script>
-    
-        const targetDate = new Date("Febrauar 9, 2026 12:05:00").getTime();
+        // Wir speichern die Zielzeiten für jeden Timer in einem Objekt
+        let targets = {
+            'pause': new Date("Feb 9, 2026 12:05:00").getTime(),
+            'school': new Date("Feb 9, 2026 13:30:00").getTime(), // Beispielzeit
+            'vacation': new Date("Mar 28, 2026 00:00:00").getTime() // Beispielzeit
+        };
 
-        const timer = setInterval(function() {
-
+        // Das Haupt-Intervall, das alle Timer aktualisiert
+        setInterval(function() {
             const now = new Date().getTime();
 
-            const distance = targetDate - now;
+            // Wir rufen die Berechnungs-Funktion für jeden Timer auf
+            calculateTime('pause', now);
+            calculateTime('school', now);
+            calculateTime('vacation', now);
+
+        }, 1000);
+
+        // Funktion zur Berechnung der Zeit
+        function calculateTime(id, now) {
+            const distance = targets[id] - now;
+            const container = document.getElementById('cd-' + id);
+
+            if (distance < 0) {
+                container.innerHTML = "<h2>JETZT!</h2>";
+                return;
+            }
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = days;
-            document.getElementById("hours").innerText = formatTime(hours);
-            document.getElementById("minutes").innerText = formatTime(minutes);
-            document.getElementById("seconds").innerText = formatTime(seconds);
+            // Wir suchen innerhalb des spezifischen Containers nach den Klassen
+            container.querySelector('.day').innerText = days;
+            container.querySelector('.hour').innerText = formatTime(hours);
+            container.querySelector('.min').innerText = formatTime(minutes);
+            container.querySelector('.sec').innerText = formatTime(seconds);
+        }
 
-            if (distance < 0) {
-                clearInterval(timer);
-                document.getElementById("countdown").innerHTML = "<h2>JETZT!!!!</h2>";
-            }
-        }, 1000);
-
+        // Hilfsfunktion für führende Nullen (01, 02 etc.)
         function formatTime(time) {
             return time < 10 ? `0${time}` : time;
+        }
+
+        // Funktion um das Datum per Button zu ändern
+        function updateTarget(id) {
+            const input = document.getElementById('input-' + id).value;
+            
+            if (input) {
+                // Das Input-Feld gibt einen String zurück, wir wandeln ihn in Millisekunden um
+                targets[id] = new Date(input).getTime();
+                
+                // Falls dort vorher "JETZT!" stand, müssen wir das HTML zurücksetzen, 
+                // damit die Zahlen wieder angezeigt werden können.
+                const container = document.getElementById('cd-' + id);
+                if (container.querySelector('h2')) {
+                    // Seite neu laden ist am einfachsten, um die Struktur wiederherzustellen,
+                    // aber eleganter ist es, das HTML neu zu schreiben:
+                    location.reload(); 
+                }
+            } else {
+                alert("Bitte wähle zuerst ein Datum und eine Uhrzeit aus!");
+            }
         }
     </script>
 </body>
