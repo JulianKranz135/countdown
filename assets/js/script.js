@@ -1,6 +1,6 @@
         let targets = {
-            'pause': new Date("Mar 16, 2026 11:05:00").getTime(),
-            'school': new Date("Mar 16, 2026 12:50:00").getTime(), 
+            'pause': new Date("Mar 17, 2026 09:15:00").getTime(),
+            'school': new Date("Mar 17, 2026 14:45:00").getTime(), 
             'vacation': new Date("Mar 27, 2026 12:50:00").getTime() 
         };
 
